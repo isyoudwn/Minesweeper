@@ -6,8 +6,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashSet;
@@ -39,17 +41,21 @@ public class MainActivity extends AppCompatActivity {
                 setText("+");
                 flags = flags - 1;
 
-            } else {
-                setText("");
-                flags = flags + 1;
             }
+            setText("");
+            flags = flags + 1;
         }
 
         // 블록 열기 메소드
-        public boolean breakBlock() {
+        public boolean breakBlock(View view) {
+
+            setClickable(false);
             blocks = blocks - 1;
 
-            return true;
+            if (mine == true) {
+                return true;
+            }
+            return false;
         }
     }
 
@@ -60,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
         BlockButtons[][] buttons = new BlockButtons[9][9];
-
-
+        
         // 버튼 81개 생성
         for (int i = 0; i < 9; i++) {
 
@@ -80,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
                                 1.0f);
 
                 buttons[i][j].setLayoutParams(layoutParams);
+
+
+                // 이벤트 리스너 등록
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        ((BlockButtons)view).breakBlock(view);
+                    }
+                });
+
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        ((BlockButtons)view).toggleFlag();
+                    }
+                });
             }
         }
 
@@ -326,9 +347,8 @@ public class MainActivity extends AppCompatActivity {
                             buttons[i][j].setText(count + "");
                         }
                     }
-                    }
                 }
             }
         }
-
     }
+}
