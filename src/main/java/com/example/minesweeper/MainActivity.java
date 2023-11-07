@@ -17,7 +17,6 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-
     // BlockButton 클래스
     public static class BlockButtons extends AppCompatButton {
         int x;
@@ -56,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 깃발 꽂기 or 해제 메소드
         public void toggleFlag() {
+
             if (flag == false) {
                 setText("+");
                 flags = flags - 1;
 
+                return;
             }
             setText("");
             flags = flags + 1;
@@ -96,7 +97,15 @@ public class MainActivity extends AppCompatActivity {
 
                 buttons[i][j] = new BlockButtons(this, i, j);
                 tableRow.addView(buttons[i][j]);
+
+                buttons[i][j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        ((BlockButtons)view).toggleFlag();
+                    }
+                });
             }
+
         }
 
         // 10개의 버튼 임의로 선택 하여 지뢰 넣기
@@ -116,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedElement.setTextColor(Color.RED);
             }
         }
+
 
         // 주변 지뢰 수 계산
         for (int i = 0; i < 9; i++) {
