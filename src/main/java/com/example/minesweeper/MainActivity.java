@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -24,15 +22,36 @@ public class MainActivity extends AppCompatActivity {
     public static class BlockButtons extends AppCompatButton {
         int x;
         int y;
-        boolean mine = false;
-        boolean flag = false;
-        int neighborMines = 0;
+        boolean mine;
+        boolean flag;
+        int neighborMines;
         static int flags = 10;
-        static int blocks = 81;
+        static int blocks;
 
         // 생성자
         public BlockButtons(Context context, int x, int y) {
+
             super(context);
+
+            TableRow.LayoutParams layoutParams =
+                    new TableRow.LayoutParams(
+                            TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.WRAP_CONTENT,
+                            1.0f);
+
+            setLayoutParams(layoutParams);
+
+            this.x = x;
+
+            this.y = y;
+
+            blocks = blocks + 1;
+
+            mine = false;
+
+            flag = false;
+
+            neighborMines = 0;
         }
 
         // 깃발 꽂기 or 해제 메소드
@@ -77,30 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
                 buttons[i][j] = new BlockButtons(this, i, j);
                 tableRow.addView(buttons[i][j]);
-
-                TableRow.LayoutParams layoutParams =
-                        new TableRow.LayoutParams(
-                                TableRow.LayoutParams.WRAP_CONTENT,
-                                TableRow.LayoutParams.WRAP_CONTENT,
-                                1.0f);
-
-                buttons[i][j].setLayoutParams(layoutParams);
-
-
-                // 이벤트 리스너 등록
-                buttons[i][j].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view){
-                        ((BlockButtons)view).breakBlock(view);
-                    }
-                });
-
-                buttons[i][j].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view){
-                        ((BlockButtons)view).toggleFlag();
-                    }
-                });
             }
         }
 
