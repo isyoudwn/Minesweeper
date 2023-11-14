@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         // 깃발 꽂기 or 해제 메소드
         public void toggleFlag() {
 
-            if (flag == false) {
+            if (!flag) {
                 setText("+");
                 flags = flags - 1;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             blocks = blocks - 1;
 
-            if (mine == true) {
+            if (mine) {
 
                 setText("●");
                 setTextColor(Color.RED);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         BlockButtons blockButton = (BlockButtons) view;
                         boolean status = blockButton.breakBlock(view);
 
-                        if (status == false && blockButton.getText().equals("0")) {
+                        if (!status && blockButton.getText().equals("0")) {
 
                             if (blockButton.x == 0) {
                                 if (blockButton.y == 0 || blockButton.y == 8) {
@@ -149,182 +149,182 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedElements.contains(buttons[i][j])) continue;
 
                 if (i == 0 && j == 0) {
-                    if (buttons[i][j + 1].mine == true) {
+                    if (buttons[i][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
-                    if (buttons[i + 1][j].mine == true) {
+                    if (buttons[i + 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
-                    if (buttons[i + 1][j + 1].mine == true) {
+                    if (buttons[i + 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (i == 0 && j == 8) {
-                    if (buttons[i][j - 1].mine == true) {
+                    if (buttons[i][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
-                    if (buttons[i + 1][j].mine == true) {
+                    if (buttons[i + 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
-                    if (buttons[i + 1][j - 1].mine == true) {
+                    if (buttons[i + 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (i == 8 && j == 8) {
                     // 위
-                    if (buttons[i - 1][j].mine == true) {
+                    if (buttons[i - 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 위
-                    if (buttons[i - 1][j - 1].mine == true) {
+                    if (buttons[i - 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 왼쪽
-                    if (buttons[i][j - 1].mine == true) {
+                    if (buttons[i][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (i == 8 && j == 0) {
                     // 위
-                    if (buttons[i - 1][j].mine == true) {
+                    if (buttons[i - 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 위
-                    if (buttons[i - 1][j + 1].mine == true) {
+                    if (buttons[i - 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 오른쪽
-                    if (buttons[i][j + 1].mine == true) {
+                    if (buttons[i][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (i == 0 && j != 8 || i == 0 && j != 0) {
                     // 왼
-                    if (buttons[i][j - 1].mine == true) {
+                    if (buttons[i][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 오
-                    if (buttons[i][j + 1].mine == true) {
+                    if (buttons[i][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 아래
-                    if (buttons[i + 1][j - 1].mine == true) {
+                    if (buttons[i + 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 아래
-                    if (buttons[i + 1][j].mine == true) {
+                    if (buttons[i + 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 아래
-                    if (buttons[i + 1][j + 1].mine == true) {
+                    if (buttons[i + 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (i == 8 && j != 0 || i == 8 && j != 8) {
                     // 왼
-                    if (buttons[i][j - 1].mine == true) {
+                    if (buttons[i][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 오
-                    if (buttons[i][j + 1].mine == true) {
+                    if (buttons[i][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 위
-                    if (buttons[i - 1][j - 1].mine == true) {
+                    if (buttons[i - 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 위
-                    if (buttons[i - 1][j].mine == true) {
+                    if (buttons[i - 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 위
-                    if (buttons[i - 1][j + 1].mine == true) {
+                    if (buttons[i - 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (j == 0 && i != 0 || j == 0 && i != 8) {
                     // 오
-                    if (buttons[i][j + 1].mine == true) {
+                    if (buttons[i][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 위
-                    if (buttons[i - 1][j].mine == true) {
+                    if (buttons[i - 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 위
-                    if (buttons[i - 1][j + 1].mine == true) {
+                    if (buttons[i - 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 아래
-                    if (buttons[i + 1][j].mine == true) {
+                    if (buttons[i + 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 아래
-                    if (buttons[i + 1][j + 1].mine == true) {
+                    if (buttons[i + 1][j + 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else if (j == 8 && i != 0 || j == 8 && i !=8) {
                     // 위
-                    if (buttons[i - 1][j].mine == true) {
+                    if (buttons[i - 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 위
-                    if (buttons[i - 1][j - 1].mine == true) {
+                    if (buttons[i - 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 왼
-                    if (buttons[i][j - 1].mine == true) {
+                    if (buttons[i][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 아래
-                    if (buttons[i + 1][j - 1].mine == true) {
+                    if (buttons[i + 1][j - 1].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 아래
-                    if (buttons[i + 1][j].mine == true) {
+                    if (buttons[i + 1][j].mine) {
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
 
                 else {
                     // 왼
-                    if (buttons[i][j-1].mine == true){
+                    if (buttons[i][j-1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 오
-                    if (buttons[i][j+1].mine == true){
+                    if (buttons[i][j+1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 위
-                    if (buttons[i-1][j].mine == true){
+                    if (buttons[i-1][j].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 아래
-                    if (buttons[i+1][j].mine == true){
+                    if (buttons[i+1][j].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 위
-                    if (buttons[i-1][j-1].mine == true){
+                    if (buttons[i-1][j-1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 위
-                    if (buttons[i-1][j+1].mine == true){
+                    if (buttons[i-1][j+1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 아래
-                    if (buttons[i+1][j-1].mine == true){
+                    if (buttons[i+1][j-1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 아래
-                    if (buttons[i+1][j+1].mine == true){
+                    if (buttons[i+1][j+1].mine){
                         buttons[i][j].neighborMines = buttons[i][j].neighborMines + 1;
                     }
                 }
