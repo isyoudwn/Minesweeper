@@ -9,12 +9,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
+    BlockButton[][] button;
 
     // BlockButton 클래스
     public static class BlockButton extends AppCompatButton {
@@ -66,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 블록 열기 메소드
-        public boolean breakBlock(View view) {
-            view.setClickable(false);
+        public boolean isMine() {
+
+            setClickable(false);
 
             blocks = blocks - 1;
 
@@ -90,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
-        BlockButton[][] button = new BlockButton[9][9];
-        
+        button = new BlockButton[9][9];
+
         // 버튼 81개 생성
         for (int i = 0; i < 9; i++) {
 
@@ -99,30 +103,24 @@ public class MainActivity extends AppCompatActivity {
             tableLayout.addView(tableRow);
 
             for (int j = 0; j < 9; j++) {
-
                 button[i][j] = new BlockButton(this, i, j);
                 tableRow.addView(button[i][j]);
 
                 button[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view){
-                        BlockButton blockButton = (BlockButton) view;
-                        boolean status = blockButton.breakBlock(view);
-
-                        if (!status && blockButton.getText().equals("0")) {
-
-                            if (blockButton.x == 0) {
-                                if (blockButton.y == 0 || blockButton.y == 8) {
-                                }
-
-                            }
-
+                        
+                        boolean status = ((BlockButton)view).isMine();
+                        
+                        if (status) {
+                            Toast.makeText(MainActivity.this, "게임오버", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            openBlock(((BlockButton) view).x, ((BlockButton) view).y);
                         }
                     }
                 });
-
             }
-
         }
 
         // 10개의 버튼 임의로 선택 하여 지뢰 넣기
@@ -158,9 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i + 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (i == 0 && j == 8) {
+                } else if (i == 0 && j == 8) {
                     if (button[i][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
@@ -170,9 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i + 1][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (i == 8 && j == 8) {
+                } else if (i == 8 && j == 8) {
                     // 위
                     if (button[i - 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -185,9 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (i == 8 && j == 0) {
+                } else if (i == 8 && j == 0) {
                     // 위
                     if (button[i - 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -200,9 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (i == 0 && j != 8 || i == 0 && j != 0) {
+                } else if (i == 0 && j != 8 || i == 0 && j != 0) {
                     // 왼
                     if (button[i][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -223,9 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i + 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (i == 8 && j != 0 || i == 8 && j != 8) {
+                } else if (i == 8 && j != 0 || i == 8 && j != 8) {
                     // 왼
                     if (button[i][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -246,9 +234,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i - 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (j == 0 && i != 0 || j == 0 && i != 8) {
+                } else if (j == 0 && i != 0 || j == 0 && i != 8) {
                     // 오
                     if (button[i][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -269,9 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i + 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else if (j == 8 && i != 0 || j == 8 && i !=8) {
+                } else if (j == 8 && i != 0 || j == 8 && i != 8) {
                     // 위
                     if (button[i - 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
@@ -292,43 +276,66 @@ public class MainActivity extends AppCompatActivity {
                     if (button[i + 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
-                }
-
-                else {
+                } else {
                     // 왼
-                    if (button[i][j-1].mine){
+                    if (button[i][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 오
-                    if (button[i][j+1].mine){
+                    if (button[i][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 위
-                    if (button[i-1][j].mine){
+                    if (button[i - 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 아래
-                    if (button[i+1][j].mine){
+                    if (button[i + 1][j].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 위
-                    if (button[i-1][j-1].mine){
+                    if (button[i - 1][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 위
-                    if (button[i-1][j+1].mine){
+                    if (button[i - 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 대각선 왼쪽 아래
-                    if (button[i+1][j-1].mine){
+                    if (button[i + 1][j - 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                     // 대각선 오른쪽 아래
-                    if (button[i+1][j+1].mine){
+                    if (button[i + 1][j + 1].mine) {
                         button[i][j].neighborMines = button[i][j].neighborMines + 1;
                     }
                 }
             }
         }
     }
+
+    // 재귀로 블록 열기
+    public void openBlock (int x, int y) {
+
+        BlockButton clickedButton = (BlockButton) button[x][y];
+
+        int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 };
+        int[] dy = { 0, 1, 1, 1, 0, -1, -1, -1 };
+
+        clickedButton.setText(clickedButton.neighborMines+"");
+
+
+        if (clickedButton.neighborMines == 0) {
+            for (int i = 0; i < dx.length; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9 || !button[nx][ny].getText().equals("") || button[nx][ny].isMine()) {
+                    continue;
+                }
+                openBlock(nx, ny);
+            }
+        }
+    }
+
 }
