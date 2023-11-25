@@ -1,5 +1,7 @@
 package com.example.minesweeper;
 
+import static com.example.minesweeper.MainActivity.BlockButton.flags;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -7,9 +9,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -17,7 +21,9 @@ import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static final int MINES = 10;
     BlockButton[][] button;
+    TableLayout tableLayout;
 
     // BlockButton 클래스
     public static class BlockButton extends AppCompatButton {
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             flags = flags + 1;
         }
 
-        // 블록 열기 메소드
+        // 지뢰인지 검사
         public boolean isMine() {
 
             setClickable(false);
@@ -78,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             if (mine) {
 
                 setText("●");
-                setTextColor(Color.RED);
 
                 return true;
             }
@@ -93,9 +98,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
+        tableLayout = (TableLayout) findViewById(R.id.tableLayout);
         button = new BlockButton[9][9];
+        ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        Set<BlockButton> mines = new HashSet<>();
 
+        // 버튼 81개 세팅
+        settingButtons(tableLayout);
+        // 지뢰 10개 세팅
+        settingMines(mines);
+        // 주변 지뢰 수 계산
+        countNeighborMine(mines);
+    }
+
+    /**
+     *
+     * TODO : 깃발 컨트롤 (Toggle Button)
+     * toggle 열린 상태면 깃발 -> 깃발 수 및 전체 mine 수 -1
+     * toggle 닫혀 있으면 버튼 누르기
+     *
+     */
+
+
+    // 버튼 생성
+    public void settingButtons(TableLayout tableLayout) {
         // 버튼 81개 생성
         for (int i = 0; i < 9; i++) {
 
@@ -109,42 +135,44 @@ public class MainActivity extends AppCompatActivity {
                 button[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view){
-                        
                         boolean status = ((BlockButton)view).isMine();
-                        
-                        if (status) {
-                            Toast.makeText(MainActivity.this, "게임오버", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            openBlock(((BlockButton) view).x, ((BlockButton) view).y);
-                        }
+                            if (status) {
+                                Toast.makeText(MainActivity.this, "게임오버", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                openBlock(((BlockButton) view).x, ((BlockButton) view).y);
+                            }
                     }
                 });
             }
         }
+    }
 
-        // 10개의 버튼 임의로 선택 하여 지뢰 넣기
+    
+    
+    // 지뢰 10개 세팅
+    public void settingMines(Set<BlockButton> mines) {
         Random random = new Random();
-        Set<BlockButton> selectedElements = new HashSet<>();
-        int numberOfElementsToSelect = 10;
 
-        while (selectedElements.size() < numberOfElementsToSelect) {
+        while (mines.size() < MINES) {
             int randomRow = random.nextInt(9);
             int randomCol = random.nextInt(9);
             BlockButton selectedElement = button[randomRow][randomCol];
 
-            if (!selectedElements.contains(selectedElement)) {
-                selectedElements.add(selectedElement);
+            if (!mines.contains(selectedElement)) {
+                mines.add(selectedElement);
                 selectedElement.mine = true;
             }
         }
+    }
 
 
-        // 주변 지뢰 수 계산
+    public void countNeighborMine(Set<BlockButton> mines) {
+
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
 
-                if (selectedElements.contains(button[i][j])) continue;
+                if (mines.contains(button[i][j])) continue;
 
                 if (i == 0 && j == 0) {
                     if (button[i][j + 1].mine) {
@@ -322,8 +350,7 @@ public class MainActivity extends AppCompatActivity {
         int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 };
         int[] dy = { 0, 1, 1, 1, 0, -1, -1, -1 };
 
-        clickedButton.setText(clickedButton.neighborMines+"");
-
+        clickedButton.setText(clickedButton.neighborMines + "");
 
         if (clickedButton.neighborMines == 0) {
             for (int i = 0; i < dx.length; i++) {
@@ -337,5 +364,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
