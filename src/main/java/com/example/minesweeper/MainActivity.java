@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
         int[] dy = { 0, 1, 1, 1, 0, -1, -1, -1 };
 
         clickedButton.setText(clickedButton.neighborMines + "");
+        clickedButton.setBackgroundColor(Color.parseColor("#A9A9A9"));
 
         if (clickedButton.neighborMines == 0) {
             for (int i = 0; i < dx.length; i++) {
