@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         boolean mine;
         boolean flag;
         int neighborMines;
-        static int flags = 10;
+        static int flags;
         static int blocks;
 
         // 생성자
@@ -69,9 +69,13 @@ public class MainActivity extends AppCompatActivity {
         public void toggleFlag() {
 
             if (!flag) {
+                if (flags >= 10) {
+                    Toast.makeText(this.getContext(), "깃발은 10개까지 사용 가능합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 setText("+");
                 MINES = MINES - 1;
-                flags = flags - 1;
+                flags = flags + 1;
                 textViewMines.setText(MINES+"");
                 flag = true;
 
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
             setText("");
             MINES = MINES + 1;
-            flags = flags + 1;
+            flags = flags - 1;
             textViewMines.setText(MINES+"");
             flag = false;
         }
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         textViewMines.setText(MINES+"");
     }
     
-    // toggle이 클릭되어있는지
+    // toggle이 클릭 되어있는지 확인
     public boolean isToggleClicked() {
         if (toggleButton.getText().equals("Break")) {
             return false;
@@ -372,6 +376,8 @@ public class MainActivity extends AppCompatActivity {
 
         clickedButton.setBackgroundColor(Color.parseColor("#A9A9A9"));
         blocks = blocks - 1;
+
+        clickedButton.setClickable(false);
 
         if (clickedButton.neighborMines == 0) {
             for (int i = 0; i < dx.length; i++) {
