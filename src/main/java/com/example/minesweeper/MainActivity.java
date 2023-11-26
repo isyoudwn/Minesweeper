@@ -1,5 +1,6 @@
 package com.example.minesweeper;
 
+import static com.example.minesweeper.MainActivity.BlockButton.blocks;
 import static com.example.minesweeper.MainActivity.BlockButton.flags;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
             setClickable(false);
 
-            blocks = blocks - 1;
-
             if (mine) {
 
                 setText("●");
@@ -138,9 +137,11 @@ public class MainActivity extends AppCompatActivity {
                         boolean status = ((BlockButton)view).isMine();
                             if (status) {
                                 Toast.makeText(MainActivity.this, "게임오버", Toast.LENGTH_SHORT).show();
+                                setButtonclickableFalse();
                             }
                             else {
-                                openBlock(((BlockButton) view).x, ((BlockButton) view).y);
+                                breakBlock(((BlockButton) view).x, ((BlockButton) view).y);
+                                isGameEnd();
                             }
                     }
                 });
@@ -148,7 +149,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 버튼 클릭 안 되게 만들기
+    public void setButtonclickableFalse() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                button[i][j].setClickable(false);
+            }
+        }
+    }
     
+    // 게임 종료 조건 검사
+    public void isGameEnd() {
+        if (blocks <= 10) {
+            setButtonclickableFalse();
+            Toast.makeText(this, "you win !!!!!", Toast.LENGTH_SHORT).show();
+        }
+    }
     
     // 지뢰 10개 세팅
     public void settingMines(Set<BlockButton> mines) {
@@ -343,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 재귀로 블록 열기
-    public void openBlock (int x, int y) {
+    public void breakBlock (int x, int y) {
 
         BlockButton clickedButton = (BlockButton) button[x][y];
 
@@ -352,6 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
         clickedButton.setText(clickedButton.neighborMines + "");
         clickedButton.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        blocks = blocks - 1;
 
         if (clickedButton.neighborMines == 0) {
             for (int i = 0; i < dx.length; i++) {
@@ -361,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                 if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9 || !button[nx][ny].getText().equals("") || button[nx][ny].isMine()) {
                     continue;
                 }
-                openBlock(nx, ny);
+                breakBlock(nx, ny);
             }
         }
     }
