@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean status = ((BlockButton)view).isMine();
                             if (status) {
                                 Toast.makeText(MainActivity.this, "게임오버", Toast.LENGTH_SHORT).show();
-                                setButtonclickableFalse();
+                                setButtonClickableFalse();
                             }
                             else {
                                 breakBlock(((BlockButton) view).x, ((BlockButton) view).y);
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 버튼 클릭 안 되게 만들기
-    public void setButtonclickableFalse() {
+    public void setButtonClickableFalse() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 button[i][j].setClickable(false);
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     // 게임 종료 조건 검사
     public void isGameEnd() {
         if (blocks <= 10) {
-            setButtonclickableFalse();
+            setButtonClickableFalse();
             Toast.makeText(this, "you win !!!!!", Toast.LENGTH_SHORT).show();
         }
     }
