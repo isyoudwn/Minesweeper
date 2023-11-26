@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this.getContext(), "깃발은 10개까지 사용 가능합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                setText("+");
+                setText("\uD83C\uDFF4");
                 MINES = MINES - 1;
                 flags = flags + 1;
                 textViewMines.setText(MINES+"");
@@ -139,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
                             if (((BlockButton) view).mine) {
-                                ((BlockButton) view).setText("●");
-                                ((BlockButton) view).setTextColor(Color.RED);
+                                ((BlockButton) view).setText("\uD83D\uDC80");
+                                view.setBackgroundColor(Color.RED);
                                 Toast.makeText(MainActivity.this, "게임 오버", Toast.LENGTH_SHORT).show();
                                 setButtonClickableFalse();
                             }
